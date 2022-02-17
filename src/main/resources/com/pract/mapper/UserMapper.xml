@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pract.mapper.UserMapper">
+    <select id="getAll" resultType="com.pract.domain.User">
+        select *
+        from user
+        <if test="search != null">
+            where username like concat('%',#{search},'%')
+        </if>
+    </select>
+
+    <select id="selectOne" resultType="com.pract.domain.User">
+        select *
+        from user
+        where username = #{user.username}
+          and password = #{user.password}
+    </select>
+
+    <select id="selectUserByUsername" resultType="String">
+        select *
+        from user
+        where username = #{username}
+    </select>
+
+    <insert id="saveOne">
+        insert into user
+        values (#{user.id}, #{user.username}, #{user.password}, #{user.nick_name}, #{user.age}, #{user.sex},
+                #{user.address});
+    </insert>
+
+    <delete id="deleteById">
+        <if test="id != null">
+            delete from user where id = #{id}
+        </if>
+    </delete>
+
+    <update id="updateById">
+        update user
+        set username=#{user.username},
+            password=#{user.password},
+            nick_name=#{user.nick_name},
+            age=#{user.age},
+            sex=#{user.sex},
+            address=#{user.address}
+        where id = #{user.id}
+    </update>
+</mapper>

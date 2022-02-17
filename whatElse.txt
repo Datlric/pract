@@ -1,0 +1,16 @@
+//todo 2.12 目前完成功能：
+    1.jwt token验证登录，需要引入redis作为补充验证token,不然会存在token伪造的情况，造成误判登录；
+    2。前端完成收到498状态码会将localStorage中的userToken清除，并强制回退登录页面，显示提示未登录，token有效期30min,
+    3.没有token会直接跳转login显示未登录过
+
+//todo 2.12:
+    1.加redis作为补充验证token
+    2.redis中token为key，value是用户的用户名
+
+//todo 2.15
+    1.把所有的登录退出登录模块完成了，退出登录会向后台发起请求，header中携带token，然后后台会在redis中删除它，返回前台信息为任何即使出错，都会清空localstorage中的token
+    2.唯一一点不足：如果前端把localstorage中的token删了，然后登录，后端会新生成token，但是request携带老的token因为为空，所以在redis中的那个对应token将会变成冗余，无法删除,只能等过期
+
+//todo 2.16
+    1.准备着手做mqtt的消息接受模块，需实现自动的在前端页面中添加和删除设备端，新建一张表用于保存设备信息
+    2.前端页面中选择设备管理方面后，可实现实时选择接受数据查看与关闭数据
