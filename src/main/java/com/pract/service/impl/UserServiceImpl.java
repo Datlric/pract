@@ -40,11 +40,14 @@ public class UserServiceImpl implements UserService {
         return new PageInfo<User>(userMapper.getAll(search));
     }
 
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public Integer deleteUserInfo(Integer id) {
         return userMapper.deleteById(id);
     }
 
+
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public Integer updateUserInfo(User user) {
         return userMapper.updateById(user);
