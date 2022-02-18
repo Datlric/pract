@@ -3,7 +3,9 @@ package com.pract.service;
 import com.pract.domain.Device;
 
 public interface DeviceService {
-    public String startReceiveData(Device device);
+    public Device startReceiveData(Device device);
 
-    public String close();
+    public String close(Device device);
+
+    public String getCurrentMsg(Device device);
 }

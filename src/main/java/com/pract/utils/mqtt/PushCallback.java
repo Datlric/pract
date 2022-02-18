@@ -1,12 +1,13 @@
 package com.pract.utils.mqtt;
 
+import lombok.Getter;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.util.HashMap;
 
-
+@Getter
 public class PushCallback implements MqttCallback {
     String TOPIC = null;
     int QOS = 0;
@@ -15,6 +16,9 @@ public class PushCallback implements MqttCallback {
     public void connectionLost(Throwable cause) {
         // 连接丢失后，一般在这里面进行重连
         System.out.println("连接断开，可以做重连");
+
+        //MESSAGE设为null以示客户端已经丢失连接，可以进行重连
+        MESSAGE = null;
     }
 
     public void deliveryComplete(IMqttDeliveryToken token) {
