@@ -9,8 +9,6 @@ import com.pract.utils.mqtt.ClientMqtt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-
 @Service
 public class DeviceServiceImpl implements DeviceService {
 
@@ -57,7 +55,10 @@ public class DeviceServiceImpl implements DeviceService {
         ClientMqtt clientMqtt = RunWith.deviceMap.get(device.getDevice_id());
         if (clientMqtt != null) {
             clientMqtt.close();
+            //从接受信息实时设备map里删除此设备信息
             RunWith.deviceMap.remove(device.getDevice_id());
+            //删除redis内存储此设备存放数据hash中的key、fields
+            redisUtils.Hdel("data", device.getDevice_id());
             res = true;
         } else RunWith.deviceMap.remove(device.getDevice_id());
         return res;
@@ -66,7 +67,7 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public String getCurrentMsg(Device device) {
         //todo 2.18 前端传参获取实时压力数据待写
-        HashMap<String, String> message = RunWith.deviceMap.get(device.getDevice_id()).getStandardMessage();
-        return JsonUtils.objectToJson(message);
+        //从redis内取数据返回
+        return redisUtils.Hget("data", device.getDevice_id());
     }
 }

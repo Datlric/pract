@@ -8,6 +8,7 @@ import com.pract.domain.Book;
 import com.pract.domain.Device;
 import com.pract.mapper.BookMapper;
 import com.pract.mapper.DeviceMapper;
+import com.pract.utils.JsonUtils;
 import com.pract.utils.RedisUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.core.env.Environment;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -95,6 +97,16 @@ class PractApplicationTests {
         for (Device device : deviceList) {
             System.out.println(device);
         }
+    }
+
+    @Test
+    void JsonUtilsTest() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("TOPIC", "5642231");
+        map.put("QOS", "0");
+        map.put("MESSAGE", "pressure:50");
+        String s = JsonUtils.objectToJson(map);
+        System.out.println(s);
     }
 
 }

@@ -60,6 +60,19 @@ public class RedisUtils {
         return ans;
     }
 
+    public Long Hset(String key, String filed, String value) {
+        Jedis jedis = jedisPool.getResource();
+        Long ans = null;
+        try {
+            ans = jedis.hset(key, filed, value);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            jedis.close();
+        }
+        return ans;
+    }
+
     public Map<String, String> Hset(String key, Map<String, String> map) {
         Jedis jedis = jedisPool.getResource();
         Map<String, String> ans = null;
@@ -125,6 +138,13 @@ public class RedisUtils {
         Long del = jedis.del(key);
         jedis.close();
         return del;
+    }
+
+    public Long Hdel(String key, String fileds) {
+        Jedis jedis = jedisPool.getResource();
+        Long hdel = jedis.hdel(key, fileds);
+        jedis.close();
+        return hdel;
     }
 }
 
