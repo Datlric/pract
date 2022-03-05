@@ -32,4 +32,20 @@ public class DeviceController {
         }
         return Result.error("-1", "设备初始化失败", null);
     }
+
+    @PostMapping("/close")
+    public Result closeDevice(@RequestBody Device device) {
+        Boolean closeFlag = deviceService.close(device);
+        if (closeFlag) {
+            return Result.success("关闭成功！", null);
+        } else {
+            return Result.error("关闭失败，请检查后台系统", null);
+        }
+    }
+
+    @GetMapping("/getCurrentMsg")
+    public Result getCurrentMsg(@RequestBody Device device) {
+        String currentMsg = deviceService.getCurrentMsg(device);
+        return Result.success("此为接受到的实时消息", currentMsg);
+    }
 }

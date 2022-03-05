@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DeviceServiceImpl implements DeviceService {
-
     @Autowired
     private RedisUtils redisUtils;
 
@@ -32,9 +31,15 @@ public class DeviceServiceImpl implements DeviceService {
                     deviceForConnect.getClient_id());
             //mqtt客户端进行连接
             clientMqtt.start();
-
-            //如果client对应PushCallBack中的Message不为空的话，就将这个设备的信息放进deviceMap里面，RunWith类中会自动遍历
-            if (!clientMqtt.getPushCallback().getMESSAGE().isEmpty()) {
+            try {
+                //todo 2021/3/4 这里一定要让线程等待2秒！！！！，不然初始化还没完成就返回没有初始化结果的信息了，需要一定时间让mqtt消息到达并接受设置MESSAGE内容，mqtt消息到达间隔是3秒现在，可以改快
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            //如果client对应获取信息map中的Message不为空的话，就将这个设备的信息放进deviceMap里面，RunWith类中会自动遍历
+            String message = clientMqtt.getStandardMessage().get("MESSAGE");
+            if (message != null) {
                 //存储进全局工作设备信息的map，key: device_id; value: 客户端
                 RunWith.deviceMap.put(deviceForConnect.getDevice_id(), clientMqtt);
                 return deviceForConnect;
@@ -46,7 +51,6 @@ public class DeviceServiceImpl implements DeviceService {
 
         return null;
     }
-
 
     @Override
     public Boolean close(Device device) {

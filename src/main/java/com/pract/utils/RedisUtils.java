@@ -2,6 +2,7 @@ package com.pract.utils;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -10,6 +11,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 @Component
+@Scope("prototype")     //注意这里的线程安全问题
 public class RedisUtils {
     //redis的工具类封装
 

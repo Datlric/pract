@@ -87,7 +87,7 @@ public class ClientMqtt {
     }
 
     /*public static void main(String[] args) throws MqttException {
-        ClientMqtt client = new ClientMqtt();
+        ClientMqtt client = new ClientMqtt(null,null,0,null);
         client.start("tcp://test.ranye-iot.net:1883",
                     "Datlric-Pub-A:1",
                         0,
