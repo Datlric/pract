@@ -1,7 +1,9 @@
 package com.pract.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.pract.domain.Device;
 import com.pract.service.DeviceService;
+import com.pract.utils.RedisUtils;
 import com.pract.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +15,15 @@ public class DeviceController {
     @Autowired
     private DeviceService deviceService;
 
+    @Autowired
+    private RedisUtils redisUtils;
+
     @GetMapping("/findPage")
     public Result findPage(@RequestParam(defaultValue = "1") Integer pageNum,
                            @RequestParam(defaultValue = "5") Integer pageSize,
                            @RequestParam(defaultValue = "") String search) {
-
-        return null;
+        PageInfo<?> deviceList = deviceService.selectByPage(pageNum, pageSize, search);
+        return Result.success("查询成功", deviceList);
     }
 
     @PostMapping("/init")
@@ -39,13 +44,36 @@ public class DeviceController {
         if (closeFlag) {
             return Result.success("关闭成功！", null);
         } else {
-            return Result.error("关闭失败，请检查后台系统", null);
+            return Result.error("-1", "关闭失败，请检查后台系统", null);
         }
     }
 
     @GetMapping("/getCurrentMsg")
-    public Result getCurrentMsg(@RequestBody Device device) {
+    public Result getCurrentMsg(@RequestParam(defaultValue = "") String device_id) {
+        Device device = new Device();
+        device.setDevice_id(device_id);
         String currentMsg = deviceService.getCurrentMsg(device);
         return Result.success("此为接受到的实时消息", currentMsg);
+    }
+
+    @GetMapping("/findOne")
+    public Result findOneDevice(@RequestParam(defaultValue = "") String device_id) {
+        Device device = deviceService.selectOne(device_id);
+        if (device != null) {
+            return Result.success("查询成功", device);
+        } else {
+            return Result.error("-1", "未查找到相应设备", null);
+        }
+    }
+
+    @GetMapping("/findDeviceIsStarted")
+    public Result findDeviceIsStarted(@RequestParam(defaultValue = "") String device_id) {
+        String data = null;
+        data = redisUtils.Hget("data", device_id);
+        if (data != null) {
+            return Result.success("设备已启动", data);
+        } else {
+            return Result.error("-1", "设备未启动", null);
+        }
     }
 }

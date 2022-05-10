@@ -38,7 +38,7 @@ public class RedisConfig {
     @Value("${redis.JmxEnabled}")
     private Boolean JmxEnabled;
 
-    @Bean
+    @Bean("jedisPool")
     public JedisPool jedisPoolFactory() {
         System.out.println("JedisPool注入开始...");
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();

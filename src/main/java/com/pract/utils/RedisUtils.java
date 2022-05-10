@@ -148,5 +148,13 @@ public class RedisUtils {
         jedis.close();
         return hdel;
     }
+
+    public Long GlobalHdel(String key, String fileds) {
+
+        Jedis jedis = jedisPool.getResource();
+        Long hdel = jedis.hdel(key, fileds);
+        jedis.close();
+        return hdel;
+    }
 }
 

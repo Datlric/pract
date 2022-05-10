@@ -5,5 +5,14 @@
     <select id="getAll" resultType="com.pract.domain.Device">
         select *
         from device
+        <if test="search != null">
+            where device_id like concat('%',#{search},'%')
+        </if>
+    </select>
+
+    <select id="getOne" resultType="com.pract.domain.Device">
+        select *
+        from device
+        where device_id = #{device_id}
     </select>
 </mapper>

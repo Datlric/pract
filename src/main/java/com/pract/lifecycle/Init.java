@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+import redis.clients.jedis.Jedis;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +29,8 @@ public class Init implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         System.out.println("容器初始化完成" + redisUtils.getJedisPool());
+        redisConnectCheck();
+        testDataStore();    //todo 测试数据存入redis，记得删掉
         int length = updateDeviceList();
         System.out.println("已向redis中添加 " + length + " 条设备信息");
     }
@@ -44,5 +47,23 @@ public class Init implements ApplicationRunner {
             devicesMap.put(device.getDevice_id(), JsonUtils.objectToJson(device));
         }
         return redisUtils.Hset("devices", devicesMap).size();
+    }
+
+    private boolean redisConnectCheck() {
+        Jedis resource = null;
+        try {
+            resource = redisUtils.getJedisPool().getResource();
+            if (resource == null) {
+                System.err.print("redis连接失败，程序无法运行");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.print("redis连接失败，程序无法运行");
+        }
+        return resource == null;
+    }
+
+    private void testDataStore() {
+        redisUtils.Hset("data", "A01", "{MESSAGE=214;F:8g,Q0S=0,TOPIC=Datlric-Pub-A01}");
     }
 }

@@ -3,10 +3,7 @@ package com.pract;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.github.pagehelper.PageHelper;
-import com.pract.domain.Book;
 import com.pract.domain.Device;
-import com.pract.mapper.BookMapper;
 import com.pract.mapper.DeviceMapper;
 import com.pract.utils.JsonUtils;
 import com.pract.utils.RedisUtils;
@@ -25,9 +22,6 @@ import java.util.Map;
 class PractApplicationTests {
 
     @Autowired
-    private BookMapper bookMapper;
-
-    @Autowired
     private DeviceMapper deviceMapper;
 
     @Autowired
@@ -44,22 +38,16 @@ class PractApplicationTests {
 
     }
 
-    @Test
-    void MybatisTest() {
-        PageHelper.startPage(2, 6);
-        List<Book> all = bookMapper.getAll();
-        System.out.println(all);
-    }
 
     @Test
     void JedisTest() {
         Jedis jedis = jedisPool.getResource();
-        jedis.select(2);
+        /*jedis.select(2);
         jedis.set("name", "张三");
         jedis.expire("name", 60 * 2);
         String name = jedis.get("name");
-        jedis.close();
-        System.out.println(name);
+        jedis.close();*/
+        System.out.println(jedis);
 
        /* System.out.println(env.getProperty("spring.redis.database"));
         System.out.println(env.getProperty("spring.redis.host"));

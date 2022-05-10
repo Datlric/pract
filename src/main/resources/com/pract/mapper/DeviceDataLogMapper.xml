@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pract.mapper.DeviceDataLogMapper">
+    <select id="getAllDataLog" resultType="com.pract.domain.DeviceDataLog">
+        select *
+        from device_data_log
+
+    </select>
+
+    <select id="getSingleDeviceLog" resultType="com.pract.domain.DeviceDataLog">
+        select *
+        from device_data_log
+        where device_id = #{device_id}
+    </select>
+
+    <insert id="saveOne">
+        insert into device_data_log
+        values (#{device_data.device_id}, #{device_data.message});
+    </insert>
+
+</mapper>
