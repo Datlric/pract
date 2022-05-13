@@ -48,6 +48,7 @@ public class UserController {
         return Result.success("所有信息", userService.getAll());
     }
 
+
     @GetMapping("/findPage")    //pageNum:当前页数；pageSize：每页多少条;search: 查询的关键字--根据用户名
     public Result findPage(@RequestParam(defaultValue = "1") Integer pageNum,
                            @RequestParam(defaultValue = "5") Integer pageSize,

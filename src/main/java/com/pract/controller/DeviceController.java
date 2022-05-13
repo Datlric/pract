@@ -1,6 +1,7 @@
 package com.pract.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.pract.advisor.OperationLogAnnotation;
 import com.pract.domain.Device;
 import com.pract.service.DeviceService;
 import com.pract.utils.RedisUtils;
@@ -18,6 +19,7 @@ public class DeviceController {
     @Autowired
     private RedisUtils redisUtils;
 
+    @OperationLogAnnotation(optModule = "设备模块-设备列表", optType = "查询", optDesc = "查询所有设备")
     @GetMapping("/findPage")
     public Result findPage(@RequestParam(defaultValue = "1") Integer pageNum,
                            @RequestParam(defaultValue = "5") Integer pageSize,
