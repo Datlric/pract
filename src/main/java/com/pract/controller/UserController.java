@@ -2,6 +2,7 @@ package com.pract.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
+import com.pract.advisor.OperationLogAnnotation;
 import com.pract.domain.User;
 import com.pract.service.UserService;
 import com.pract.utils.JwtUtils;
@@ -48,7 +49,7 @@ public class UserController {
         return Result.success("所有信息", userService.getAll());
     }
 
-
+    @OperationLogAnnotation(optModule = "用户模块-用户列表", optType = "查询", optDesc = "分页查询用户")
     @GetMapping("/findPage")    //pageNum:当前页数；pageSize：每页多少条;search: 查询的关键字--根据用户名
     public Result findPage(@RequestParam(defaultValue = "1") Integer pageNum,
                            @RequestParam(defaultValue = "5") Integer pageSize,
